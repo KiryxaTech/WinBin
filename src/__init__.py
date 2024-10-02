@@ -2,3 +2,4 @@
 
 from .bin import Bin
 from .loader import Loader
+from .package import Package, PackageManager
