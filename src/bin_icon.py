@@ -5,11 +5,11 @@ from PIL.Image import Image
 from pystray import Icon, Menu, MenuItem
 from ooj import JsonFile
 
-from core import Package, RecycleBin, Size, SizeConverter
+from core import IconPackage, RecycleBin, Size, SizeConverter
 
 
 class BinIcon(Icon):
-    def __init__(self, icons_package: Package, recycle_bin: RecycleBin):
+    def __init__(self, icons_package: IconPackage, recycle_bin: RecycleBin):
         super().__init__("WinBin")
         self._icons_package = icons_package
         self._recycle_bin = recycle_bin
