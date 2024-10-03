@@ -66,10 +66,19 @@ class BinIcon(Icon):
         """Updates the tray icon title based on recycle bin status."""
         size_bytes = self._recycle_bin.size
         size_max_unit = SizeConverter.convert_to_max_unit(Size(size_bytes, Size.B))
+
         max_size = self._recycle_bin.max_size
         max_size_max_unit = SizeConverter.convert_to_max_unit(Size(max_size, Size.B))
+
         percent = f"{int(size_bytes / max_size * 100)}%" if max_size > 0 else "0%"
-        title = f"Recycle Bin | {size_max_unit} • {percent} • Max {max_size_max_unit}\n\nClick to clear"
+
+        files_count = self._recycle_bin.files_count
+        if files_count > 0:
+            files_delete_placeholder = f"\n\nClick to delete {files_count} files"
+        else:
+            files_delete_placeholder = ""
+
+        title = f"Recycle Bin | {size_max_unit} • {percent} • Max {max_size_max_unit}{files_delete_placeholder}"
         
         if title != self.title:
             self.title = title
