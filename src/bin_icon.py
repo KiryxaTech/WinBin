@@ -27,7 +27,7 @@ class BinIcon(Icon):
 
     def clear(self):
         """Clears the recycle bin and updates tray data."""
-        self._recycle_bin.clear()
+        self._recycle_bin.clear_bin()
         self.update_tray_data()
 
     def update_icon(self, icon: Image) -> None:
@@ -38,7 +38,7 @@ class BinIcon(Icon):
     def get_usage_percentage(self) -> float:
         """Returns the recycle bin usage percentage."""
         if self._recycle_bin.max_size > 0:
-            return self._recycle_bin.size / self._recycle_bin.max_size
+            return self._recycle_bin.total_size / self._recycle_bin.max_size
         return 0
 
     def update_tray_data(self) -> None:
@@ -64,7 +64,7 @@ class BinIcon(Icon):
 
     def update_title(self):
         """Updates the tray icon title based on recycle bin status."""
-        size_bytes = self._recycle_bin.size
+        size_bytes = self._recycle_bin.total_size
         size_max_unit = SizeConverter.convert_to_max_unit(Size(size_bytes, Size.B))
 
         max_size = self._recycle_bin.max_size
@@ -72,7 +72,7 @@ class BinIcon(Icon):
 
         percent = f"{int(size_bytes / max_size * 100)}%" if max_size > 0 else "0%"
 
-        files_count = self._recycle_bin.files_count
+        files_count = self._recycle_bin.item_count
         if files_count > 0:
             files_delete_placeholder = f"\n\nClick to delete {files_count} files"
         else:
