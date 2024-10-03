@@ -6,19 +6,19 @@ from PIL.Image import Image
 from core.loader import Loader
 
 
-class Package:
+class IconPackage:
     def __init__(self, name: str, images: list[Image]):
         self.name = name
         self.images = images
 
 
-class PackageManager:
+class IconPackageManager:
     PACKAGES_FILE_PATH = "config/packages.json"
     packages_file = JsonFile(PACKAGES_FILE_PATH)
     packages_file.create_if_not_exists()
 
     @classmethod
-    def create_package(cls, package: Package) -> None:
+    def create_package(cls, package: IconPackage) -> None:
         packaged_array = []
         for image in package.images:
             packaged_array.append(Loader.dump_image(image))
@@ -26,7 +26,7 @@ class PackageManager:
         cls.packages_file.set_entry(package.name, packaged_array)
 
     @classmethod
-    def get_package(cls, package_name: str) -> Package:
+    def get_package(cls, package_name: str) -> IconPackage:
         packages_data = cls.packages_file.read()
         package_data = packages_data.get(package_name)
 
@@ -34,7 +34,7 @@ class PackageManager:
         for image_str in package_data:
             images.append(Loader.load_image(image_str))
 
-        package = Package(package_name, images)
+        package = IconPackage(package_name, images)
         return package
     
     @classmethod
@@ -42,7 +42,7 @@ class PackageManager:
         cls.packages_file.set_entry("default_package", package_name)
 
     @classmethod
-    def get_default_package(cls) -> Package:
+    def get_default_package(cls) -> IconPackage:
         cls.packages_file.update_buffer_from_file()
         
         default_package_name = cls.packages_file.get_entry("default_package")
