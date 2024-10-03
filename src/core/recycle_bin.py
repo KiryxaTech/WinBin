@@ -3,6 +3,8 @@ import ctypes
 import winreg
 import os
 
+from core.size_converter import Size, SizeConverter
+
 # Структура для хранения информации о корзине
 class SHQUERYRBINFO(ctypes.Structure):
     _fields_ = [
@@ -37,7 +39,7 @@ class RecycleBin:
 
     def set_recycle_bin_max_size(self, size_in_bytes: int) -> None:
         """Устанавливает максимальный размер корзины для указанного диска."""
-        size_in_mb = self._convert_bytes_to_mb(size_in_bytes)
+        size_in_mb = SizeConverter.convert(Size(size_in_bytes, Size.B), Size.MB)
         self._update_max_capacity_in_registry(size_in_mb)
 
     def _calculate_bin_size(self) -> int:
@@ -102,26 +104,9 @@ class RecycleBin:
         """Возвращает максимальный размер корзины в мегабайтах из реестра."""
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, volume_key_path) as volume_key:
             max_size_mb, _ = winreg.QueryValueEx(volume_key, "MaxCapacity")
-            return self._convert_mb_to_bytes(max_size_mb)
-
-    @staticmethod
-    def _convert_mb_to_bytes(size_in_mb: int) -> int:
-        """Конвертирует мегабайты в байты."""
-        return size_in_mb * 1024 * 1024
+            return SizeConverter.convert(Size(max_size_mb, Size.MB), Size.B)
 
     @staticmethod
     def _convert_bytes_to_mb(size_in_bytes: int) -> int:
         """Конвертирует байты в мегабайты."""
         return size_in_bytes // (1024 * 1024)
-
-
-# Пример использования
-if __name__ == "__main__":
-    recycle_bin = RecycleBin()
-    print(f"Размер корзины: {recycle_bin.size / 1024:.3} КБ")
-    print(f"Количество файлов в корзине: {recycle_bin.files_count}")
-    print(f"Максимальный размер корзины: {recycle_bin.max_size / 1024 ** 3:.3} ГБ")
-
-    new_size = 1024 ** 3 * 4  # 4 ГБ
-    recycle_bin.set_recycle_bin_max_size(new_size)
-    print(f"Новый максимальный размер корзины: {recycle_bin.max_size / 1024 ** 3:.3} ГБ")

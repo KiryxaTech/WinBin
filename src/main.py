@@ -1,22 +1,24 @@
 # KiryxaTech 2024, MIT License
 
+from threading import Thread
+
 import PIL.Image
-from package import Package, PackageManager
+
+from core.package import PackageManager
+from bin import BinIcon
 
 
 def main():
-    images = []
-    for i in range(4):
-        images.append(PIL.Image.open(f"bin_{i}.png"))
+    package = PackageManager.read_package(PackageManager.get_default_package())
+    icons = package.images
+    icons_count = len(icons)
 
-    package = Package(
-        name="Windows 11 Icons",
-        images=images
-    )
-    PackageManager.write_package(package)
+    bin = BinIcon(icons[0])
 
-    print(len(PackageManager.read_package("Windows 11 Icons").images))
+    bin_thread = Thread(target=bin.run)
+    bin_thread.start()
 
+    bin.update_icon(icons[icons_count - 2])
 
 if __name__ == "__main__":
     main()

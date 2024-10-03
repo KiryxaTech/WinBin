@@ -3,7 +3,7 @@
 from ooj import JsonFile
 from PIL.Image import Image
 
-from loader import Loader
+from core.loader import Loader
 
 
 class Package:
@@ -43,4 +43,5 @@ class PackageManager:
 
     @classmethod
     def get_default_package(cls) -> str:
+        cls.packages_file.update_buffer_from_file()
         return cls.packages_file.get_entry("default_package")
