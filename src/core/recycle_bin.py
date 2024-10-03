@@ -108,8 +108,3 @@ class RecycleBin:
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, volume_key_path) as volume_key:
             max_size_mb, _ = winreg.QueryValueEx(volume_key, "MaxCapacity")
             return SizeConverter.convert(Size(max_size_mb, Size.MB), Size.B)
-
-    @staticmethod
-    def _convert_bytes_to_mb(size_in_bytes: int) -> int:
-        """Конвертирует байты в мегабайты."""
-        return size_in_bytes // (1024 * 1024)
