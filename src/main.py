@@ -7,7 +7,7 @@ from bin_icon import BinIcon
 
 
 def main():
-    package = PackageManager.read_package(PackageManager.get_default_package())
+    package = PackageManager.get_default_package()
 
     recycle_bin = RecycleBin("C:")
     bin = BinIcon(package, recycle_bin)

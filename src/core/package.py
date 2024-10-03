@@ -18,7 +18,7 @@ class PackageManager:
     packages_file.create_if_not_exists()
 
     @classmethod
-    def write_package(cls, package: Package) -> None:
+    def create_package(cls, package: Package) -> None:
         packaged_array = []
         for image in package.images:
             packaged_array.append(Loader.dump_image(image))
@@ -26,7 +26,7 @@ class PackageManager:
         cls.packages_file.set_entry(package.name, packaged_array)
 
     @classmethod
-    def read_package(cls, package_name: str) -> Package:
+    def get_package(cls, package_name: str) -> Package:
         packages_data = cls.packages_file.read()
         package_data = packages_data.get(package_name)
 
@@ -38,10 +38,12 @@ class PackageManager:
         return package
     
     @classmethod
-    def set_default_package(cls, package_name: str):
+    def set_default_package(cls, package_name: str) -> None:
         cls.packages_file.set_entry("default_package", package_name)
 
     @classmethod
-    def get_default_package(cls) -> str:
+    def get_default_package(cls) -> Package:
         cls.packages_file.update_buffer_from_file()
-        return cls.packages_file.get_entry("default_package")
+        
+        default_package_name = cls.packages_file.get_entry("default_package")
+        return cls.get_package(default_package_name)
