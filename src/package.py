@@ -1,3 +1,5 @@
+# KiryxaTech 2024, MIT License
+
 from ooj import JsonFile
 from PIL.Image import Image
 

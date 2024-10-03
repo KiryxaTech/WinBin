@@ -4,7 +4,7 @@ from PIL.Image import Image
 from pystray import Icon, Menu, MenuItem
 
 
-class Bin(Icon):
+class BinIcon(Icon):
     def __init__(self, icon: Image):
         super().__init__("WinBin")
 
