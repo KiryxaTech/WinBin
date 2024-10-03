@@ -17,7 +17,9 @@ class Size:
         self.unit = unit
 
     def __repr__(self):
-        return f"{self.value} {self.unit}"
+        if self.value % 1 == 0:
+            return f"{int(self.value)} {self.unit}"
+        return f"{self.value:.1f} {self.unit}".replace(".", ",")
 
 
 class SizeConverter:
@@ -43,10 +45,20 @@ class SizeConverter:
         """Конвертирует размер в байты."""
         unit_in_bytes = SizeConverter.UNITS_IN_BYTES[size.unit]
         return size.value * unit_in_bytes
+    
+    @classmethod
+    def convert_to_max_unit(cls, size: Size) -> Size:
+        """Конвертирует размер в максимально возможную единицу измерения."""
+        # Начальные значения
+        current_value = size.value
+        current_unit = size.unit
 
+        units = [Size.B, Size.KB, Size.MB, Size.GB, Size.TB]
+        # Перебираем возможные единицы измерения
+        for i in range(len(units)):
+            if current_value < 1024 or units[i] == Size.TB:  # Останавливаемся, если меньше 1024 или достигли TB
+                break
+            current_value /= 1024  # Делим на 1024 для перехода к следующей единице
+            current_unit = units[i + 1]  # Обновляем единицу
 
-# Пример использования
-size_in_mb = Size(1024, Size.MB)
-size_in_gb = SizeConverter.convert(size_in_mb, Size.GB)
-
-print(f"{size_in_mb} = {size_in_gb} GB")  # Ожидается: 1024 MB = 1 GB
+        return Size(current_value, current_unit)  # Возвращаем новый объект Size

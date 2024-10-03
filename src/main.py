@@ -2,23 +2,20 @@
 
 from threading import Thread
 
-import PIL.Image
-
-from core.package import PackageManager
-from bin import BinIcon
+from core import PackageManager, RecycleBin
+from bin_icon import BinIcon
 
 
 def main():
     package = PackageManager.read_package(PackageManager.get_default_package())
-    icons = package.images
-    icons_count = len(icons)
 
-    bin = BinIcon(icons[0])
+    recycle_bin = RecycleBin("C:")
+    bin = BinIcon(package, recycle_bin)
 
     bin_thread = Thread(target=bin.run)
     bin_thread.start()
 
-    bin.update_icon(icons[icons_count - 2])
+    bin.start_background_update()
 
 if __name__ == "__main__":
     main()
