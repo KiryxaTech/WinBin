@@ -43,7 +43,7 @@ class RecycleBin:
         self._update_max_capacity_in_registry(size_in_mb)
 
     def clear(self):
-        ctypes.windll.shell32.SHEmptyRecycleBinA(None, None, 1)
+        ctypes.windll.shell32.SHEmptyRecycleBinA(None, None, 0)
 
     def _calculate_bin_size(self) -> int:
         """Внутренний метод для вычисления общего размера файлов в корзине."""
@@ -54,10 +54,9 @@ class RecycleBin:
         def get_item_size(item):
             nonlocal total_size
             if item.IsFolder:
-                # folder = shell.NameSpace(item.Path)
-                # for sub_item in folder.Items():
-                #     get_item_size(sub_item)
-                pass
+                folder = shell.NameSpace(item.Path)
+                for sub_item in folder.Items():
+                    get_item_size(sub_item)
             else:
                 total_size += item.Size
 
