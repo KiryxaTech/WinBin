@@ -5,6 +5,8 @@ import ctypes
 import winreg
 import os
 from typing import Optional
+from ooj import JsonFile
+
 from core.size_converter import Size, SizeConverter
 
 
@@ -70,7 +72,14 @@ class RecycleBin:
         """Clear the recycle bin by removing all items."""
         window_handle = None  # Window handle for confirmation dialog
         root_path = None  # Path to the root of the recycle bin
-        flags = 0  # Flags for operation (e.g., confirmation of cleaning)
+
+        configurate = JsonFile("config\configurate.json")
+        configurate.update_buffer_from_file()
+        ask_defore_cleaning = configurate.get_entry("ask_before_cleaning")
+        if ask_defore_cleaning:
+            flags = 0  # Flags for operation (e.g., confirmation of cleaning)
+        else:
+            flags = 1
         ctypes.windll.shell32.SHEmptyRecycleBinA(window_handle, root_path, flags)
 
     def open_bin_in_explorer(self) -> None:
