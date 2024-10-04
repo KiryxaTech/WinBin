@@ -5,11 +5,11 @@ from PIL.Image import Image
 from pystray import Icon, Menu, MenuItem
 from ooj import JsonFile
 
-from core import Package, RecycleBin, Size, SizeConverter
+from core import IconPackage, RecycleBin, Size, SizeConverter
 
 
 class BinIcon(Icon):
-    def __init__(self, icons_package: Package, recycle_bin: RecycleBin):
+    def __init__(self, icons_package: IconPackage, recycle_bin: RecycleBin):
         super().__init__("WinBin")
         self._icons_package = icons_package
         self._recycle_bin = recycle_bin
@@ -27,7 +27,7 @@ class BinIcon(Icon):
 
     def clear(self):
         """Clears the recycle bin and updates tray data."""
-        self._recycle_bin.clear()
+        self._recycle_bin.clear_bin()
         self.update_tray_data()
 
     def update_icon(self, icon: Image) -> None:
@@ -38,7 +38,7 @@ class BinIcon(Icon):
     def get_usage_percentage(self) -> float:
         """Returns the recycle bin usage percentage."""
         if self._recycle_bin.max_size > 0:
-            return self._recycle_bin.size / self._recycle_bin.max_size
+            return self._recycle_bin.total_size / self._recycle_bin.max_size
         return 0
 
     def update_tray_data(self) -> None:
@@ -64,12 +64,21 @@ class BinIcon(Icon):
 
     def update_title(self):
         """Updates the tray icon title based on recycle bin status."""
-        size_bytes = self._recycle_bin.size
+        size_bytes = self._recycle_bin.total_size
         size_max_unit = SizeConverter.convert_to_max_unit(Size(size_bytes, Size.B))
+
         max_size = self._recycle_bin.max_size
         max_size_max_unit = SizeConverter.convert_to_max_unit(Size(max_size, Size.B))
+
         percent = f"{int(size_bytes / max_size * 100)}%" if max_size > 0 else "0%"
-        title = f"Recycle Bin | {size_max_unit} • {percent} • Max {max_size_max_unit}\n\nClick to clear"
+
+        files_count = self._recycle_bin.item_count
+        if files_count > 0:
+            files_delete_placeholder = f"\n\nClick to delete {files_count} files"
+        else:
+            files_delete_placeholder = ""
+
+        title = f"Recycle Bin | {size_max_unit} • {percent} • Max {max_size_max_unit}{files_delete_placeholder}"
         
         if title != self.title:
             self.title = title

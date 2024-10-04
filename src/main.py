@@ -2,12 +2,12 @@
 
 from threading import Thread
 
-from core import PackageManager, RecycleBin
+from core import IconPackageManager, RecycleBin
 from bin_icon import BinIcon
 
 
 def main():
-    package = PackageManager.read_package(PackageManager.get_default_package())
+    package = IconPackageManager.get_default_package()
 
     recycle_bin = RecycleBin("C:")
     bin = BinIcon(package, recycle_bin)
