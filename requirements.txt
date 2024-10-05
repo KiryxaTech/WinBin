@@ -1,1 +1,4 @@
+ooj==0.1.0
+pillow==10.2.0
 pystray==0.19.5
+pywin32==306
