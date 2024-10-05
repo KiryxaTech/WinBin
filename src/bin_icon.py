@@ -21,8 +21,9 @@ class BinIcon(Icon):
     def _setup_menu(self):
         """Creates the system tray icon menu."""
         self.menu = Menu(
-            MenuItem("Exit", self.stop),
-            MenuItem("Clear", self.clear, default=True)
+            MenuItem("Open", self._recycle_bin.open_bin_in_explorer),
+            MenuItem("Clear", self.clear, default=True),
+            MenuItem("Exit", self.stop)
         )
 
     def clear(self):

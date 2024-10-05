@@ -97,11 +97,13 @@ class RecycleBin:
 
         def get_item_size(item):
             nonlocal total_size
-
             if item.IsFolder:
-                folder = windows_shell.NameSpace(item.Path)
-                for sub_item in folder.Items():
-                    get_item_size(sub_item)
+                try:
+                    folder = windows_shell.NameSpace(item.Path)
+                    for sub_item in folder.Items():
+                        get_item_size(sub_item)
+                except:
+                    pass
             else:
                 total_size += item.Size
 
