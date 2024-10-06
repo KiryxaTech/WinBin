@@ -1,6 +1,8 @@
 import pythoncom
 import threading
 import time
+
+import darkdetect
 from PIL.Image import Image
 from pystray import Icon, Menu, MenuItem
 from ooj import JsonFile
@@ -16,6 +18,7 @@ class BinIcon(Icon):
         self._skin = skin
         self._recycle_bin = recycle_bin
         self._last_icon_index = None
+        self._last_theme = None
         self._setup_menu()
         self.update_tray_data()
         self.start_background_update()
@@ -52,18 +55,22 @@ class BinIcon(Icon):
     def update_based_on_bin_size(self) -> None:
         """Updates the icon based on recycle bin usage."""
         usage_percentage = self.get_usage_percentage()
-        num_icons = len(self._skin.images)
+
+        theme = darkdetect.theme()
+        skin_icons = self._skin.get_icons_from_theme()
+        skin_icons_count = len(skin_icons)
 
         if usage_percentage == 0:
             icon_index = 0
         elif usage_percentage >= 1:
-            icon_index = num_icons - 1
+            icon_index = -1
         else:
-            icon_index = int(usage_percentage * (num_icons - 2)) + 1
+            icon_index = int(usage_percentage * (skin_icons_count - 2)) + 1
 
-        if icon_index != self._last_icon_index:
+        if icon_index != self._last_icon_index or theme != self._last_theme:
             self._last_icon_index = icon_index
-            self.update_icon(self._skin.images[icon_index])
+            self._last_theme = theme
+            self.update_icon(skin_icons[icon_index])
 
     def update_title(self):
         """Updates the tray icon title based on recycle bin status."""
@@ -94,7 +101,6 @@ class BinIcon(Icon):
             while True:
                 self.update_tray_data()
 
-                configurate_file.update_buffer_from_file()
                 update_frequency = configurate_file.get_entry("update_frequency")
                 time.sleep(update_frequency)
         finally:

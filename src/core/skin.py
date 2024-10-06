@@ -1,13 +1,28 @@
 import json
+
+import darkdetect
 from PIL.Image import Image
+
 from core.loader import Loader
 
 
 class Skin:
-    def __init__(self, name: str, light_icons: list[Image], dark_icons: list[Image]) -> None:
+    def __init__(
+            self,
+            name: str,
+            light_icons: list[Image],
+            dark_icons: list[Image]
+        ) -> None:
+        
         self.name = name
         self.light_icons = light_icons
         self.dark_icons = dark_icons
+
+    def get_icons_from_theme(self) -> list[Image]:
+        if darkdetect.isLight():
+            return self.dark_icons
+        else:
+            return self.light_icons
 
     def to_dict(self) -> dict:
         return {
