@@ -5,13 +5,15 @@ from PIL.Image import Image
 from pystray import Icon, Menu, MenuItem
 from ooj import JsonFile
 
-from core import IconPackage, RecycleBin, Size, SizeConverter
+from core.recycle_bin import RecycleBin
+from core.size_converter import Size, SizeConverter
+from core.skin import Skin
 
 
 class BinIcon(Icon):
-    def __init__(self, icons_package: IconPackage, recycle_bin: RecycleBin):
+    def __init__(self, skin: Skin, recycle_bin: RecycleBin):
         super().__init__("WinBin")
-        self._icons_package = icons_package
+        self._skin = skin
         self._recycle_bin = recycle_bin
         self._last_icon_index = None
         self._setup_menu()
@@ -50,7 +52,7 @@ class BinIcon(Icon):
     def update_based_on_bin_size(self) -> None:
         """Updates the icon based on recycle bin usage."""
         usage_percentage = self.get_usage_percentage()
-        num_icons = len(self._icons_package.images)
+        num_icons = len(self._skin.images)
 
         if usage_percentage == 0:
             icon_index = 0
@@ -61,7 +63,7 @@ class BinIcon(Icon):
 
         if icon_index != self._last_icon_index:
             self._last_icon_index = icon_index
-            self.update_icon(self._icons_package.images[icon_index])
+            self.update_icon(self._skin.images[icon_index])
 
     def update_title(self):
         """Updates the tray icon title based on recycle bin status."""

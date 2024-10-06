@@ -9,7 +9,7 @@ from PIL.Image import Image
 
 class Loader:
     @staticmethod
-    def load_image(image_str: str) -> Image:
+    def to_image(image_str: str) -> Image:
 
         image_bytes = base64.b64decode(image_str)
         image = PIL.Image.open(io.BytesIO(image_bytes))
@@ -17,7 +17,7 @@ class Loader:
         return image
     
     @staticmethod
-    def dump_image(image: Image) -> str:
+    def to_bytes(image: Image) -> str:
         buffered = io.BytesIO()
         image.save(buffered, format="PNG")
         image_str = base64.b64encode(buffered.getvalue()).decode()

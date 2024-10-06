@@ -2,15 +2,16 @@
 
 from threading import Thread
 
-from core import IconPackageManager, RecycleBin
+from core.recycle_bin import RecycleBin
+from core.skin import Skin, SkinManager
 from bin_icon import BinIcon
 
 
 def main():
-    package = IconPackageManager.get_default_package()
+    skin = SkinManager.get_default_skin()
 
     recycle_bin = RecycleBin("C:")
-    bin = BinIcon(package, recycle_bin)
+    bin = BinIcon(skin, recycle_bin)
 
     bin_thread = Thread(target=bin.run)
     bin_thread.start()
