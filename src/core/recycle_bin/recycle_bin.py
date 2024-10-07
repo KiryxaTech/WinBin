@@ -73,7 +73,7 @@ class RecycleBin:
         window_handle = None  # Window handle for confirmation dialog
         root_path = None  # Path to the root of the recycle bin
 
-        configurate = JsonFile("config\configurate.json")
+        configurate = JsonFile(r"config\configurate.json")
         configurate.update_buffer_from_file()
         ask_defore_cleaning = configurate.get_entry("ask_before_cleaning")
         if ask_defore_cleaning:

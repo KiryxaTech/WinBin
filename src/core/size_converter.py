@@ -12,7 +12,7 @@ class Size:
     GB = "GB"
     TB = "TB"
 
-    def __init__(self, value: float, unit: SIZES):
+    def __init__(self, value: float, unit: SIZES = B):
         self.value = value
         self.unit = unit
 
