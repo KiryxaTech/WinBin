@@ -5,6 +5,7 @@ from threading import Thread
 from core.recycle_bin import RecycleBin
 from core.skin import SkinManager
 from bin_icon import BinTrayIcon
+from ui.skin_builder.skin_builder_window import SkinBuilderWindow
 
 
 def main():
