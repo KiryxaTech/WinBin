@@ -1,3 +1,4 @@
+from gc import disable, enable
 import tkinter
 from PIL import Image
 from customtkinter import CTkFrame, CTkLabel, CTkButton, CTkImage
@@ -41,17 +42,12 @@ class SkinCardActionButton(CTkButton):
             text=None
         )
 
-        # Изначально задаем состояние кнопки
-        if is_disable:
-            self.disable()
-        else:
-            self.enable()
+        disable() if is_disable else enable()
 
-        # Привязываем события для нажатия и отпускания кнопки
-        self.bind("<ButtonPress-1>", self.on_press)  # при нажатии левой кнопки мыши
-        self.bind("<ButtonRelease-1>", self.on_release)  # при отпускании левой кнопки мыши
-        self.bind("<Enter>", self.on_enter)  # при наведении курсора на кнопку
-        self.bind("<Leave>", self.on_leave)  # при убирании курсора с кнопки
+        self.bind("<ButtonPress-1>", self.on_press)
+        self.bind("<ButtonRelease-1>", self.on_release)
+        self.bind("<Enter>", self.on_enter)
+        self.bind("<Leave>", self.on_leave)
 
     def enable(self):
         """Включить кнопку."""
@@ -94,12 +90,20 @@ class SkinCardActionButton(CTkButton):
 
 
 class SkinCardBottomWidget(CTkFrame):
-    """Виджет для нижней части карточки скина."""
-    
-    def __init__(self, master, skin: Skin, apply_callback):
-        super().__init__(master=master, height=30, fg_color="transparent")
+    def __init__(
+        self,
+        master,
+        skin: Skin
+    ) -> None:
+        
+        super().__init__(
+            master=master,
+            height=30,
+            fg_color="transparent"
+        )
+
         self.__skin = skin
-        self.__apply_callback = apply_callback
+
         self.__create_widgets()
 
     def __create_widgets(self):
