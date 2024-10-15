@@ -1,7 +1,7 @@
+import os
 from threading import Thread
 from typing import Literal
 
-import customtkinter
 import darkdetect
 from PIL.Image import Image
 from pystray import Icon as Icon, Menu, MenuItem
@@ -28,7 +28,7 @@ class TrayIcon(Icon):
         self.__theme_tracker = ThemeTracker(self.update_icon_theme)
 
         self.__previous_icon_index = 0
-        self.__previous_icon_theme: Literal["Light", "Dark"] = "Light"
+        self.__previous_icon_theme: Literal["Light", "Dark"] = darkdetect.theme()
 
         self.update_icon_level()
         self.update_icon_theme()
@@ -48,6 +48,8 @@ class TrayIcon(Icon):
         self.__size_tracker.stop_tracking()
         self.__theme_tracker.stop_tracking()
 
+        os._exit(0) # Stop all program processing.
+
     def create_menu(self):
         quit_item = MenuItem(
             text="Quit",
@@ -62,17 +64,14 @@ class TrayIcon(Icon):
             text="Open in Explorer",
             action=self.__recycle_bin.open_bin_in_explorer
         )
-
         skin_crafter_item = MenuItem(
             text="Skin Crafter",
-            action=SkinCrafterWindow,
-            enabled=False
+            action=SkinCrafterWindow
         )
-
         startup_item = MenuItem(
             text="Add to startup",
-            radio=True,
-            action=self.get_percent_fullness
+            action=None,
+            enabled=False
         )
 
         menu = Menu(
