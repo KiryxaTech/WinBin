@@ -1,2 +1,2 @@
 from .recycle_bin import RecycleBin
-from .size_tracker import SizeTracker
+from .size_controller import SizeController

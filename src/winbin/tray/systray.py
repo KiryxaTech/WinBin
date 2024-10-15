@@ -6,11 +6,11 @@ import darkdetect
 from PIL.Image import Image
 from pystray import Icon as Icon, Menu, MenuItem
 
-from core.recycle_bin import RecycleBin, SizeTracker
+from core.recycle_bin import RecycleBin, SizeController
 from core.size_converter import Size, SizeConverter
 from core.skin import Skin
-from core.theme_tracker import ThemeTracker
-from winbin.windows.skin_crafter import SkinCrafterWindow
+from core.theme_controller import ThemeController
+from winbin.windows import SkinCrafterWindow
 
 
 class TrayIcon(Icon):
@@ -24,8 +24,8 @@ class TrayIcon(Icon):
 
         self.__skin = skin
         self.__recycle_bin = recycle_bin
-        self.__size_tracker = SizeTracker(self.update_icon_level)
-        self.__theme_tracker = ThemeTracker(self.update_icon_theme)
+        self.__size_controller = SizeController(self.update_icon_level)
+        self.__theme_controller = ThemeController(self.update_icon_theme)
 
         self.__previous_icon_index = 0
         self.__previous_icon_theme: Literal["Light", "Dark"] = darkdetect.theme()
@@ -39,14 +39,14 @@ class TrayIcon(Icon):
         self.__main_thread = Thread(target=super().run)
         self.__main_thread.start()
 
-        self.__size_tracker.start_tracking()
-        self.__theme_tracker.start_tracking()
+        self.__size_controller.start_tracking()
+        self.__theme_controller.start_tracking()
 
     def stop(self) -> None:
         super().stop()
         
-        self.__size_tracker.stop_tracking()
-        self.__theme_tracker.stop_tracking()
+        self.__size_controller.stop_tracking()
+        self.__theme_controller.stop_tracking()
 
         os._exit(0) # Stop all program processing.
 
@@ -90,9 +90,9 @@ class TrayIcon(Icon):
 
     def update_icon_level(self):
         if self.__previous_icon_theme == "Light":
-            icons = self.__skin.light_icons
-        else:
             icons = self.__skin.dark_icons
+        else:
+            icons = self.__skin.light_icons
 
         percent_fullness = self.get_percent_fullness() / 100
 
@@ -104,6 +104,8 @@ class TrayIcon(Icon):
             icons_count = len(icons)
             icon_index = int(percent_fullness * (icons_count - 2)) + 1
             icon = icons[icon_index]
+
+        self.update_title()
 
         self.__previous_icon_index = icons.index(icon)
         self._update_icon(icon)
@@ -126,7 +128,7 @@ class TrayIcon(Icon):
         super()._update_icon()
 
     def _update_title(self, title: str) -> None:
-        self.title = title
+        self._title = title
         super()._update_title()
 
     def _generate_title(self):

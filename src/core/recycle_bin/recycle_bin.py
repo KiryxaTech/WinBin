@@ -1,5 +1,6 @@
 # KiryxaTech 2024, MIT License
 
+import subprocess
 import win32com.client
 import ctypes
 import winreg
@@ -84,9 +85,9 @@ class RecycleBin:
 
     def open_bin_in_explorer(self) -> None:
         try:
-            os.system("files.exe Shell:RecycleBinFolder")
-        except:
-            os.system("explorer.exe ::{645FF040-5081-101B-9F08-00AA002F954E}")
+            subprocess.run(["files.exe", "Shell:RecycleBinFolder"], check=True)
+        except FileNotFoundError:
+            subprocess.run(["explorer.exe", "Shell:RecycleBinFolder"])
 
     def _calculate_total_bin_size(self) -> int:
         """Calculate the total size of files and folders in the recycle bin.
