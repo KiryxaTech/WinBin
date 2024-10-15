@@ -83,7 +83,10 @@ class RecycleBin:
         ctypes.windll.shell32.SHEmptyRecycleBinA(window_handle, root_path, flags)
 
     def open_bin_in_explorer(self) -> None:
-        os.system("explorer.exe ::{645FF040-5081-101B-9F08-00AA002F954E}")
+        try:
+            os.system("files.exe Shell:RecycleBinFolder")
+        except:
+            os.system("explorer.exe ::{645FF040-5081-101B-9F08-00AA002F954E}")
 
     def _calculate_total_bin_size(self) -> int:
         """Calculate the total size of files and folders in the recycle bin.

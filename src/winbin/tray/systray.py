@@ -1,6 +1,7 @@
 from threading import Thread
 from typing import Literal
 
+import customtkinter
 import darkdetect
 from PIL.Image import Image
 from pystray import Icon as Icon, Menu, MenuItem
@@ -62,10 +63,9 @@ class TrayIcon(Icon):
             action=self.__recycle_bin.open_bin_in_explorer
         )
 
-        skin_crafter_thread = Thread(target=SkinCrafterWindow, daemon=True)
         skin_crafter_item = MenuItem(
             text="Skin Crafter",
-            action=skin_crafter_thread.start,
+            action=SkinCrafterWindow,
             enabled=False
         )
 
@@ -85,7 +85,6 @@ class TrayIcon(Icon):
             quit_item
         )
         self.menu = menu
-
 
     def update_title(self) -> None:
         self._update_title(self._generate_title())
