@@ -1,5 +1,6 @@
 from threading import Thread
 from typing import Literal
+
 import darkdetect
 from PIL.Image import Image
 from pystray import Icon as Icon, Menu, MenuItem
@@ -8,6 +9,7 @@ from core.recycle_bin import RecycleBin, SizeTracker
 from core.size_converter import Size, SizeConverter
 from core.skin import Skin
 from core.theme_tracker import ThemeTracker
+from winbin.windows.skin_crafter import SkinCrafterWindow
 
 
 class TrayIcon(Icon):
@@ -45,7 +47,6 @@ class TrayIcon(Icon):
         self.__size_tracker.stop_tracking()
         self.__theme_tracker.stop_tracking()
 
-
     def create_menu(self):
         quit_item = MenuItem(
             text="Quit",
@@ -61,25 +62,30 @@ class TrayIcon(Icon):
             action=self.__recycle_bin.open_bin_in_explorer
         )
 
-        menu = Menu(open_bin_item, empty_bin_item, Menu.SEPARATOR, quit_item)
-
-        menu = Menu(
-            MenuItem(
-                text="Open in explorer",
-                action=self.__recycle_bin.open_bin_in_explorer
-            ),
-            MenuItem(
-                text="Empty",
-                action=self.__recycle_bin.clear_bin,
-                default=True
-            ),
-            MenuItem(
-                text="Quit",
-                action=self.stop
-            )
+        skin_crafter_thread = Thread(target=SkinCrafterWindow, daemon=True)
+        skin_crafter_item = MenuItem(
+            text="Skin Crafter",
+            action=skin_crafter_thread.start,
+            enabled=False
         )
 
+        startup_item = MenuItem(
+            text="Add to startup",
+            radio=True,
+            action=self.get_percent_fullness
+        )
+
+        menu = Menu(
+            skin_crafter_item,
+            open_bin_item,
+            empty_bin_item,
+            Menu.SEPARATOR,
+            startup_item,
+            Menu.SEPARATOR,
+            quit_item
+        )
         self.menu = menu
+
 
     def update_title(self) -> None:
         self._update_title(self._generate_title())

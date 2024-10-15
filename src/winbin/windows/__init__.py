@@ -1,1 +1,1 @@
-from .skin_crafter import SkinCrafterWindow
+from .skin_crafter.skin_crafter import SkinCrafterWindow

@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
 from core.skin import SkinManager
-from winbin.windows.skin_crafter.skin_card.skin_card import SkinCard
+from .skin_card import SkinCard
 
 
 class SkinCrafterWindow(ctk.CTk):

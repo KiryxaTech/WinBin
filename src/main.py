@@ -16,6 +16,5 @@ def main():
     bin_thread = Thread(target=bin.run)
     bin_thread.start()
 
-
 if __name__ == "__main__":
     main()
