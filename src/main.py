@@ -2,20 +2,19 @@
 
 from threading import Thread
 
-from core import IconPackageManager, RecycleBin
-from bin_icon import BinIcon
+from core.recycle_bin import RecycleBin
+from core.skin import SkinManager
+from winbin.tray import TrayIcon
 
 
 def main():
-    package = IconPackageManager.get_default_package()
+    skin = SkinManager.get_default_skin()
 
     recycle_bin = RecycleBin("C:")
-    bin = BinIcon(package, recycle_bin)
+    bin = TrayIcon(skin, recycle_bin)
 
     bin_thread = Thread(target=bin.run)
     bin_thread.start()
-
-    bin.start_background_update()
 
 if __name__ == "__main__":
     main()

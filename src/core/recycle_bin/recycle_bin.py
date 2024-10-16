@@ -1,5 +1,6 @@
 # KiryxaTech 2024, MIT License
 
+import subprocess
 import win32com.client
 import ctypes
 import winreg
@@ -73,7 +74,7 @@ class RecycleBin:
         window_handle = None  # Window handle for confirmation dialog
         root_path = None  # Path to the root of the recycle bin
 
-        configurate = JsonFile("config\configurate.json")
+        configurate = JsonFile(r"config\configurate.json")
         configurate.update_buffer_from_file()
         ask_defore_cleaning = configurate.get_entry("ask_before_cleaning")
         if ask_defore_cleaning:
@@ -83,7 +84,10 @@ class RecycleBin:
         ctypes.windll.shell32.SHEmptyRecycleBinA(window_handle, root_path, flags)
 
     def open_bin_in_explorer(self) -> None:
-        os.system("explorer.exe ::{645FF040-5081-101B-9F08-00AA002F954E}")
+        try:
+            subprocess.run(["files.exe", "Shell:RecycleBinFolder"], check=True)
+        except FileNotFoundError:
+            subprocess.run(["explorer.exe", "Shell:RecycleBinFolder"])
 
     def _calculate_total_bin_size(self) -> int:
         """Calculate the total size of files and folders in the recycle bin.

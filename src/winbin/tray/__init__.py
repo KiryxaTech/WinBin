@@ -1,0 +1,1 @@
+from .systray import TrayIcon
