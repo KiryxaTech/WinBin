@@ -18,8 +18,7 @@ def start_tray_icon():
 
     bin_tray_icon = TrayIcon(bin_skin, recycle_bin)
 
-    tray_icon_thread = Thread(target=bin_tray_icon.run)
-    tray_icon_thread.start()
+    bin_tray_icon.start()
 
 
 def main():
