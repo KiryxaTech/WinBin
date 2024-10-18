@@ -12,7 +12,7 @@ from core.recycle_bin import RecycleBin, SizeController
 from core.size_converter import Size, SizeConverter
 from core.skin import Skin
 from core.theme_controller import ThemeController
-from winbin.windows import SkinCrafterWindow
+from winbin.windows import SkinCrafterWindow, SettingsWindow
 
 
 class IconUpdater:
@@ -297,8 +297,8 @@ class TrayIcon(Icon):
             Menu.SEPARATOR,
             MenuItem(
                 text="Settings",
-                action=None,
-                enabled=False
+                action=lambda: SettingsWindow().mainloop(),
+                enabled=True
             ),
             MenuItem(
                 text="Add to startup",

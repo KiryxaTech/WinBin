@@ -21,6 +21,7 @@ class SizeController:
     def start_tracking(self) -> None:
         if not self.__tracking:
             event_handler = SizeHandler(self.__action)
+            print("WORKING!")
             self.__observer.schedule(event_handler, path='C:/$Recycle.Bin', recursive=False)
             self.__observer.start()
             self.__tracking = True

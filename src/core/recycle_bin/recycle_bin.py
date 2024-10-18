@@ -1,7 +1,9 @@
 # KiryxaTech 2024, MIT License
 
 import subprocess
+from threading import Thread
 import win32com.client
+import pythoncom
 import ctypes
 import winreg
 import os
@@ -40,7 +42,10 @@ class RecycleBin:
         Returns:
             int: Total size of items in the recycle bin in bytes.
         """
-        return self._calculate_total_bin_size()
+        pythoncom.CoInitialize()
+        total_size = self._calculate_total_bin_size()
+        pythoncom.CoUninitialize()
+        return total_size
 
     @property
     def item_count(self) -> int:
@@ -76,7 +81,7 @@ class RecycleBin:
 
         configurate = JsonFile(r"config\configurate.json")
         configurate.update_buffer_from_file()
-        ask_defore_cleaning = configurate.get_entry("ask_before_cleaning")
+        ask_defore_cleaning = configurate.get_entry("askBeforeCleaning")
         if ask_defore_cleaning:
             flags = 0  # Flags for operation (e.g., confirmation of cleaning)
         else:
@@ -85,9 +90,12 @@ class RecycleBin:
 
     def open_bin_in_explorer(self) -> None:
         try:
-            subprocess.run(["files.exe", "Shell:RecycleBinFolder"], check=True)
+            open_bin = lambda: subprocess.run(["files.exe", "Shell:RecycleBinFolder"], check=True)
         except FileNotFoundError:
-            subprocess.run(["explorer.exe", "Shell:RecycleBinFolder"])
+            open_bin = lambda: subprocess.run(["explorer.exe", "Shell:RecycleBinFolder"])
+
+        explorer_thread = Thread(target=open_bin)
+        explorer_thread.start()
 
     def _calculate_total_bin_size(self) -> int:
         """Calculate the total size of files and folders in the recycle bin.

@@ -1,0 +1,1 @@
+from .bin_fullness import BinFullnessWidget
