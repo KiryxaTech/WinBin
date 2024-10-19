@@ -7,7 +7,7 @@ class Page(ctk.CTkFrame):
     def __init__(self, master, name: str):
         super().__init__(
             master=master,
-            fg_color="transparent" # ("#ffffff", "#313131")
+            fg_color="transparent"
         )
 
         self.name = name

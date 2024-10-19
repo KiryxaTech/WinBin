@@ -10,4 +10,4 @@ class SkinPreviewWidget(ctk.CTkFrame):
             height=200
         )
 
-        self.preview_field = ctk.CTkFrame()
+        self.preview_field = ctk.CTkFrame(self)
