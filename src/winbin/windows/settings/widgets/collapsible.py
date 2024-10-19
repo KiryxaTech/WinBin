@@ -3,15 +3,15 @@
 import tkinter as tk
 
 import customtkinter as ctk
-import PIL.Image
-from PIL.Image import Image
+
+from core.loader import ImageLoader, ThemedPack
 
 
 class CollapsibleWidget(ctk.CTkFrame):
     def __init__(
             self,
             master,
-            image: list[Image, Image],
+            icon: ThemedPack,
             text: str,
             # description: str,
             internal_widget: ctk.CTkFrame
@@ -28,9 +28,9 @@ class CollapsibleWidget(ctk.CTkFrame):
             width=40,
             height=40,
             image=ctk.CTkImage(
-                light_image=image[0],
-                dark_image=image[1],
-                size=(35, 35)
+                light_image=icon.light,
+                dark_image=icon.dark,
+                size=(25, 25)
             ),
             fg_color="transparent",
             text=None
@@ -43,19 +43,17 @@ class CollapsibleWidget(ctk.CTkFrame):
             fg_color="transparent",
             text=text,
             text_color="white",
-            font=("Gotham", 16)
+            font=("Gotham", 14)
         )
         self.text_widget.pack(side=tk.LEFT, padx=(15, 0))
 
+        chevron_down = ImageLoader.get_ctk_image("regular.chevronDown", 18)
+        chevron_down = ImageLoader.get_ctk_image("regular.chevronUp", 18)
         self.arrow_widget = ctk.CTkLabel(
             master=self,
             width=40,
             height=40,
-            image=ctk.CTkImage(
-                light_image=PIL.Image.open(r"assets\settings\ui\ChevronDownLight.png"),
-                dark_image=PIL.Image.open(r"assets\settings\ui\ChevronDownDark.png"),
-                size=(18, 18)
-            ),
+            image=chevron_down,
             fg_color="transparent",
             text=None
         )

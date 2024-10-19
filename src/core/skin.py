@@ -3,7 +3,7 @@ import json
 import darkdetect
 from PIL.Image import Image
 
-from core.loader import Loader
+from core.loader import ImageLoader
 
 
 class Skin:
@@ -26,16 +26,16 @@ class Skin:
 
     def to_dict(self) -> dict:
         return {
-            "lightIcons": [Loader.to_bytes(img) for img in self.light_icons],
-            "darkIcons": [Loader.to_bytes(img) for img in self.dark_icons]
+            "lightIcons": [ImageLoader.to_bytes(img) for img in self.light_icons],
+            "darkIcons": [ImageLoader.to_bytes(img) for img in self.dark_icons]
         }
 
     @staticmethod
     def from_dict(name: str, data: dict) -> 'Skin':
         return Skin(
             name=name,
-            light_icons=[Loader.to_image(bytes_data) for bytes_data in data["lightIcons"]],
-            dark_icons=[Loader.to_image(bytes_data) for bytes_data in data["darkIcons"]]
+            light_icons=[ImageLoader.to_image(bytes_data) for bytes_data in data["lightIcons"]],
+            dark_icons=[ImageLoader.to_image(bytes_data) for bytes_data in data["darkIcons"]]
         )
 
 
