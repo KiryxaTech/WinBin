@@ -1,1 +1,0 @@
-from .skin_crafter import SkinCrafterWindow

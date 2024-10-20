@@ -4,7 +4,7 @@ import tkinter as tk
 
 import customtkinter as ctk
 
-from core.loader import ImageLoader, ThemedPack
+from core.image_loader import ImageLoader, ThemedPack
 
 
 class CollapsibleWidget(ctk.CTkFrame):

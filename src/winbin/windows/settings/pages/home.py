@@ -1,9 +1,9 @@
 import tkinter as tk
 
-from core.loader import ImageLoader
+from core.image_loader import ImageLoader
 
 from .page import Page
-from ..widgets import BinFullnessWidget, SkinPreviewWidget, CollapsibleWidget
+from ..widgets import BinFullnessWidget, CollapsibleWidget
 
 import PIL.Image
 
@@ -17,9 +17,6 @@ class HomePage(Page):
         self.bin_fullness_widget = BinFullnessWidget(self)
         self.bin_fullness_widget.pack(side=tk.TOP, fill=tk.X, pady=(20, 0))
 
-        # self.skin_preview_widget = SkinPreviewWidget(self)
-        # self.skin_preview_widget.pack(side=tk.TOP, fill=tk.X, pady=(15, 0))
-
-        img = ImageLoader.get_themed_pack("regular.skins")
-        self.collaps = CollapsibleWidget(self, icon=img, text="Collaps", internal_widget=Page(self, ""))
+        skins_icon = ImageLoader.get_themed_pack("regular.skins")
+        self.collaps = CollapsibleWidget(self, icon=skins_icon, text="Collaps", internal_widget=Page(self, ""))
         self.collaps.pack(side=tk.TOP, fill=tk.X, pady=(15, 0))

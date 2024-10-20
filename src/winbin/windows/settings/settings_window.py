@@ -3,6 +3,8 @@
 import customtkinter as ctk
 import PIL.Image
 
+from core.image_loader import ImageLoader
+
 from .pages import Page, HomePage
 from .menu import Menu, MenuButton
 
@@ -26,7 +28,7 @@ class SettingsWindow(ctk.CTk):
         home_page = HomePage(self)
         MenuButton(
             master=self.menu,
-            icon=PIL.Image.open(r"assets\settings\home.png"),
+            icon=ImageLoader.get_image("menu.home"),
             active=True,
             bind_page=home_page,
         )
@@ -34,21 +36,21 @@ class SettingsWindow(ctk.CTk):
         skins_page = Page(self, "Skins")
         MenuButton(
             master=self.menu,
-            icon=PIL.Image.open(r"assets\settings\skins.png"),
+            icon=ImageLoader.get_image("menu.skins"),
             bind_page=skins_page
         )
 
         settings_page = Page(self, "Settings")
         MenuButton(
             master=self.menu,
-            icon=PIL.Image.open(r"assets\settings\settings.png"),
+            icon=ImageLoader.get_image("menu.settings"),
             bind_page=settings_page
         )
 
         about_page = Page(self, "About")
         MenuButton(
             master=self.menu,
-            icon=PIL.Image.open(r"assets\settings\about.png"),
+            icon=ImageLoader.get_image("menu.about"),
             bind_page=about_page
         )
         

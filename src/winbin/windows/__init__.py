@@ -1,2 +1,1 @@
-from .skin_crafter.skin_crafter import SkinCrafterWindow
 from .settings.settings_window import SettingsWindow

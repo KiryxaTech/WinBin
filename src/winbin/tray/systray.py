@@ -12,7 +12,7 @@ from core.recycle_bin import RecycleBin, SizeController
 from core.size_converter import Size, SizeConverter
 from core.skin import Skin
 from core.theme_controller import ThemeController
-from winbin.windows import SkinCrafterWindow, SettingsWindow
+from winbin.windows import SettingsWindow
 
 
 class IconUpdater:
@@ -281,10 +281,6 @@ class TrayIcon(Icon):
         """
         
         self.menu = Menu(
-            MenuItem(
-                text="Skin Crafter",
-                action=SkinCrafterWindow
-            ),
             MenuItem(
                 text="Open",
                 action=self.__recycle_bin.open_bin_in_explorer,

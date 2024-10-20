@@ -3,7 +3,7 @@ import json
 import darkdetect
 from PIL.Image import Image
 
-from core.loader import ImageLoader
+from core.image_loader import ImageLoader
 
 
 class Skin:

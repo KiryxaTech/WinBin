@@ -5,6 +5,7 @@ from threading import Thread
 from core.recycle_bin import RecycleBin
 from core.skin import SkinManager
 from winbin.tray import TrayIcon
+from winbin.windows import SettingsWindow
 
 
 DRIVE_LETTER = "C:"
@@ -25,7 +26,6 @@ def main():
     """ The main function of the program that starts all processes. """
 
     start_tray_icon()
-
 
 if __name__ == "__main__":
     main()
