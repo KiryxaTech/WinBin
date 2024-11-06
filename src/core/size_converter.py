@@ -49,16 +49,14 @@ class SizeConverter:
     @classmethod
     def convert_to_max_unit(cls, size: Size) -> Size:
         """Конвертирует размер в максимально возможную единицу измерения."""
-        # Начальные значения
         current_value = size.value
         current_unit = size.unit
 
         units = [Size.B, Size.KB, Size.MB, Size.GB, Size.TB]
-        # Перебираем возможные единицы измерения
         for i in range(len(units)):
-            if current_value < 1024 or units[i] == Size.TB:  # Останавливаемся, если меньше 1024 или достигли TB
+            if current_value < 1024 or current_unit == Size.TB:  # Останавливаемся, если меньше 1024 или достигли TB
                 break
             current_value /= 1024  # Делим на 1024 для перехода к следующей единице
-            current_unit = units[i + 1]  # Обновляем единицу
+            current_unit = units[i + 1]  # Обновляем единицу только после деления
 
-        return Size(current_value, current_unit)  # Возвращаем новый объект Size
+        return Size(current_value, current_unit)

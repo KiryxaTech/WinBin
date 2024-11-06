@@ -6,7 +6,7 @@ from typing import List, Optional
 import customtkinter as ctk
 from PIL.Image import Image
 
-from winbin.windows.settings.utils import ACCENT_COLOR
+from winbin.windows.settings.utils import ColorUtils
 
 from ..pages import Page
 
@@ -78,14 +78,14 @@ class MenuButton(ctk.CTkFrame):
 
         MenuButton.active_button = self
         self.is_active = True
-        self.configure(fg_color=("#eaeaea", "#2d2d2d"))
-        self.active_line.configure(fg_color=ACCENT_COLOR)
+        self.configure(fg_color=ColorUtils.active_menu_button())
+        self.active_line.configure(fg_color=ColorUtils.accent())
         self.bind_page.show()
 
     def to_normal(self):
         """Set the button to normal state."""
         self.is_active = False
-        self.configure(fg_color="transparent")
+        self.configure(fg_color=ColorUtils.noactive_menu_button())
         self.active_line.configure(fg_color="transparent")
         self.bind_page.hide()
 

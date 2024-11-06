@@ -1,10 +1,11 @@
 import tkinter
 import customtkinter as ctk
+import winaccent
 
 from core.recycle_bin import RecycleBin
 from core.recycle_bin.size_controller import SizeController
 from core.size_converter import Size, SizeConverter
-from winbin.windows.settings.utils import ACCENT_COLOR
+from winbin.windows.settings.utils import ColorUtils
 
 
 class BinTitleWidget(ctk.CTkLabel):
@@ -27,7 +28,7 @@ class BinFullnessBar(ctk.CTkProgressBar):
         super().__init__(
             master=master,
             height=15,
-            progress_color=ACCENT_COLOR,
+            progress_color=ColorUtils.accent(),
             orientation="horizontal",  # Устанавливаем горизонтальную ориентацию
             mode="determinate"  # Устанавливаем режим для отображения определённого прогресса
         )
